@@ -1,5 +1,6 @@
 <script setup>
 import { RouterView } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 </script>
 
@@ -15,6 +16,7 @@ import { RouterView } from 'vue-router';
           </RouterLink>
         </h1>
         <ul class="navbar-nav flex-row gap-3 gap-md-4">
+          <li class="nav-item"><RouterLink to="/" class="nav-link">Héroes</RouterLink></li>
           <li class="nav-item"><RouterLink to="/favoritos" class="nav-link">Favoritos</RouterLink></li>
           <li class="nav-item"><a class="nav-link" href="#">Recomendador</a></li>
         </ul>

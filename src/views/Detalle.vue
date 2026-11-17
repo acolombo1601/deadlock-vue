@@ -1,9 +1,10 @@
 <script setup>
-
 import { ref, onMounted, computed } from 'vue'
 import { useFavoritos } from '@/composable/useFavoritos';
+import HayError from '@/components/HayError.vue'
 import { useRoute } from 'vue-router'
 
+const error = ref(false);
 const { cargarFavoritos, favoritos, esFavorito, agregarFavoritos } = useFavoritos()
 
 const route = useRoute();
@@ -13,11 +14,21 @@ const habilidades = ref([]);
 
 const fetchHeroe = (uri = `https://api.deadlock-api.com/v1/assets/heroes/${route.params.id}`) => {
     fetch(uri)
-        .then((res) => res.json())
+        .then((res) => {
+            if (!res.ok) throw new Error()
+            return res.json()
+        })
         .then((data) => {
+            if (!data) {
+                error.value = true
+                return
+            }
             heroe.value = data;
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+            console.log(err)
+            error.value = true
+        })
 }
 
 const fetchHabilidades = (uri = `https://api.deadlock-api.com/v1/assets/items/by-hero-id/${route.params.id}`) => {
@@ -48,6 +59,7 @@ const verificarFavorito = computed(() => {
 
 <template>
     <main class="container flex-grow-1 py-4 py-md-5">
+        <HayError v-if="error" codigo="404" titulo="No pudimos cargar este héroe" mensaje="Puede que no exista o que haya un problema de conexión." texto-boton="Ver todos los héroes"></HayError>
         <div v-if="heroe" class="row g-5 align-items-center">
 
             <!-- Info -->

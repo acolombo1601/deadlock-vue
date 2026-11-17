@@ -200,3 +200,14 @@ body {
 .boton-etiqueta.activa::before {
     background-color: var(--acento);
 }
+
+.estado-error {
+    max-width: 520px;
+}
+
+.codigo-error {
+    font-size: clamp(4rem, 15vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--acento);
+}

@@ -1,5 +1,4 @@
 <script setup>
-
 import ContenedorCards from '@/components/ContenedorCards.vue';
 import { ref, watch, onMounted } from 'vue'
 
@@ -67,7 +66,7 @@ watch(
         </div>
 
         <!-- Buscador -->
-        <form class="panel-busqueda row g-2 mx-auto mb-4 mb-md-5"  @submit.prevent>
+        <form class="panel-busqueda row g-2 mx-auto mb-4 mb-md-5" @submit.prevent>
             <div class="col-12 col-lg-6">
                 <input v-model="busqueda" class="form-control" placeholder="Buscar por nombre"
                     aria-label="Buscar por nombre">
@@ -99,7 +98,7 @@ watch(
 
             <!-- Botón ver todos-->
             <div v-if="!hayFiltros" class="text-center mt-4">
-                <button type="button" class="btn btn-acento fw-semibold" @click="verTodos = !verTodos">
+                <button type="button" class="etiqueta etiqueta-fija boton-etiqueta position-relative d-inline-block py-3 px-4 text-nowrap text-center text-black fw-bold" @click="verTodos = !verTodos">
                     {{ verTodos ? 'Ver top 8' : 'Ver todos los héroes' }}
                 </button>
             </div>

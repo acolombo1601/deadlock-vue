@@ -201,6 +201,10 @@ body {
     background-color: var(--acento);
 }
 
+.hay-error {
+  height: 80vh;
+}
+
 .estado-error {
     max-width: 520px;
 }

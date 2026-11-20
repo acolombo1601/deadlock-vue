@@ -1,5 +1,6 @@
 <script setup>
 import ContenedorCards from '@/components/ContenedorCards.vue';
+import HayError from '@/components/HayError.vue'
 import { ref, watch, onMounted } from 'vue'
 
 const heroes = ref([]);
@@ -13,6 +14,8 @@ const dificultad = ref('');
 const verTodos = ref(false);
 const hayFiltros = ref(false);
 
+const error = ref(false);
+
 
 const fetchHeroes = (uri = 'https://api.deadlock-api.com/v1/assets/heroes') => {
     return fetch(uri)
@@ -20,7 +23,11 @@ const fetchHeroes = (uri = 'https://api.deadlock-api.com/v1/assets/heroes') => {
         .then((data) => {
             heroes.value = data.filter(item => item.player_selectable);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          error.value = true;
+          console.log(err);
+        } )
+
 }
 
 const fetchRank = (uri = 'https://api.deadlock-api.com/v1/analytics/hero-stats') => {
@@ -30,7 +37,10 @@ const fetchRank = (uri = 'https://api.deadlock-api.com/v1/analytics/hero-stats')
             ranking.value = data.sort((a, b) => (b.wins * 100 / b.matches) - (a.wins * 100 / a.matches));
             heroesRank.value = ranking.value.map((rank) => heroes.value.find((heroe) => heroe.id == rank.hero_id));
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          heroesRank.value = heroes.value;
+          console.log(err);
+        })
 }
 
 onMounted(async () => {
@@ -59,7 +69,8 @@ watch(
 </script>
 
 <template>
-    <main class="container flex-grow-1 py-4 py-md-5">
+    <HayError v-if="error" titulo="No hay conexión" mensaje="Verifique su conexión a internet e intentelo más tarde." texto-boton="Reintentar"></HayError>
+    <main v-else class="container flex-grow-1 py-4 py-md-5">
         <div class="text-center mb-4 mb-md-5">
             <h1 class="titulo mb-3">Héroes de Deadlock</h1>
             <p class="text-secondary fs-5 mb-0">Buscá por nombre o filtrá por rol y dificultad.</p>
@@ -73,7 +84,7 @@ watch(
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
                 <select v-model="rol" class="form-select" aria-label="Filtrar por rol">
-                    <option selected value="">Roles</option>
+                    <option selected value="">Seleccionar rol</option>
                     <option value="assassin">Asesino</option>
                     <option value="brawler">Luchador</option>
                     <option value="marksman">Tirador</option>
@@ -82,7 +93,7 @@ watch(
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
                 <select v-model="dificultad" class="form-select" aria-label="Filtrar por dificultad">
-                    <option selected value="">Dificultad</option>
+                    <option selected value="">Seleccionar dificultad</option>
                     <option value="1">Baja</option>
                     <option value="2">Media</option>
                     <option value="3">Alta</option>

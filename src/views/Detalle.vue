@@ -5,6 +5,7 @@ import HayError from '@/components/HayError.vue'
 import { useRoute } from 'vue-router'
 
 const error = ref(false);
+const errorHab = ref(false);
 const { cargarFavoritos, favoritos, esFavorito, agregarFavoritos } = useFavoritos()
 
 const route = useRoute();
@@ -37,7 +38,10 @@ const fetchHabilidades = (uri = `https://api.deadlock-api.com/v1/assets/items/by
         .then((data) => {
             habilidades.value = data.filter((item) => item.ability_type == 'ultimate' || item.ability_type == 'signature');
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          console.log(err);
+          errorHab.value = true;
+        })
 }
 
 const limpiarLore = (texto) => {
@@ -69,7 +73,8 @@ const verificarFavorito = computed(() => {
                 <p class="lore mb-5">{{ limpiarLore(heroe.description.lore) }}</p>
 
                 <h2 class="h4 mb-3">Habilidades</h2>
-                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                <p v-if="errorHab" class="fst-italic">No se pudo cargar las habilidades</p>
+                <div v-else class="row row-cols-1 row-cols-sm-2 g-3">
                     <div v-for="habilidad in habilidades" class="col d-flex align-items-center gap-3">
                         <div class="habilidad-icono">
                             <img :src="habilidad.image" :alt="habilidad.name">

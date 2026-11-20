@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router'
 
 const error = ref(false);
 const errorHab = ref(false);
+const loading = ref(true);
 const { cargarFavoritos, favoritos, esFavorito, agregarFavoritos } = useFavoritos()
 
 const route = useRoute();
@@ -13,7 +14,7 @@ const route = useRoute();
 const heroe = ref();
 const habilidades = ref([]);
 
-const fetchHeroe = (uri = `https://api.deadlock-api.com/v1/assets/heroes/${route.params.id}`) => {
+const fetchHeroe = (uri = `https://api.deadlock-api.com/v1/assets/heroes/${route.params.id}?language=spanish`) => {
     fetch(uri)
         .then((res) => {
             if (!res.ok) throw new Error()
@@ -32,7 +33,7 @@ const fetchHeroe = (uri = `https://api.deadlock-api.com/v1/assets/heroes/${route
         })
 }
 
-const fetchHabilidades = (uri = `https://api.deadlock-api.com/v1/assets/items/by-hero-id/${route.params.id}`) => {
+const fetchHabilidades = (uri = `https://api.deadlock-api.com/v1/assets/items/by-hero-id/${route.params.id}?language=spanish`) => {
     fetch(uri)
         .then((res) => res.json())
         .then((data) => {
@@ -48,9 +49,14 @@ const limpiarLore = (texto) => {
     return texto.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '');
 }
 
-onMounted(() => {
-    fetchHeroe();
-    fetchHabilidades();
+onMounted(async () => {
+    try {
+        await fetchHeroe();;
+        await fetchHabilidades();
+    } finally {
+        loading.value = false;
+    }
+    ;
     cargarFavoritos()
 })
 
@@ -64,7 +70,7 @@ const verificarFavorito = computed(() => {
 <template>
     <main class="container flex-grow-1 py-4 py-md-5">
         <HayError v-if="error" codigo="404" titulo="No pudimos cargar este héroe" mensaje="Puede que no exista o que haya un problema de conexión." texto-boton="Ver todos los héroes"></HayError>
-        <div v-if="heroe" class="row g-5 align-items-center">
+        <div v-if="!loading" class="row g-5 align-items-center">
 
             <!-- Info -->
             <div class="col-12 col-lg-6 d-flex flex-column">
@@ -92,7 +98,7 @@ const verificarFavorito = computed(() => {
             <!-- Imagen -->
             <div class="col-12 col-lg-6 text-center">
                 <div class="position-relative d-inline-block">
-                    <img :src="`/heroes-img/${heroe.name.replaceAll('&', 'and').replaceAll(' ', '_')}.webp`"
+                    <img :src="`/heroes-img/${heroe.id}.webp`"
                         :alt="heroe.name" class="heroe-img d-block img-fluid border border-1 border-white">
 
                     <div
@@ -105,6 +111,9 @@ const verificarFavorito = computed(() => {
             </div>
 
         </div>
-
+        <div v-else class="d-flex flex-column align-items-center justify-content-center gap-3 py-5 my-5">
+            <div class="spinner-border cargando"></div>
+            <p class="text-secondary mb-0">Cargando héroe...</p>
+        </div>
     </main>
 </template>

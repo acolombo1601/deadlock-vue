@@ -1,6 +1,19 @@
+@font-face {
+    font-family: 'VALVEOracle';
+    src: url('/src/fuentes/VALVEOracle-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+h1, h2, h3, .nav-link {
+    font-family: 'VALVEOracle', sans-serif;
+}
+
+
 :root {
     --fondo: #0f0f14;
-    --superficie: #1a1a21;
+    --buscador: #1a1a21;
     --linea: #33333b;
     --acento: #46ecd4;
 }
@@ -48,7 +61,7 @@ body {
 .panel-busqueda {
     max-width: 1100px;
     padding: 1rem;
-    background-color: var(--superficie);
+    background-color: var(--buscador);
     border: 1px solid var(--linea);
     border-radius: 0.75rem;
 }
@@ -84,7 +97,7 @@ body {
     transition: transform 0.3s;
 }
 
-.contenedor:hover{
+.contenedor:hover {
     transform: rotate(-0.4deg);
 }
 
@@ -115,7 +128,7 @@ body {
     background-color: var(--acento);
 }
 
-.etiqueta{
+.etiqueta {
     bottom: 10%;
     isolation: isolate;
 }
@@ -172,11 +185,11 @@ body {
     filter: brightness(0);
 }
 
-.heroe-img{
+.heroe-img {
     transition: transform 0.3s;
 }
 
-.heroe-img:hover{
+.heroe-img:hover {
     transform: rotate(-0.5deg);
 }
 
@@ -185,7 +198,7 @@ body {
     transition: transform 0.3s;
 }
 
-.etiqueta-fija:hover{
+.etiqueta-fija:hover {
     transform: rotate(2deg);
 }
 
@@ -202,7 +215,7 @@ body {
 }
 
 .hay-error {
-  height: 80vh;
+    height: 80vh;
 }
 
 .estado-error {
@@ -213,5 +226,12 @@ body {
     font-size: clamp(4rem, 15vw, 8rem);
     font-weight: 800;
     line-height: 1;
+    color: var(--acento);
+}
+
+.cargando {
+    --bs-spinner-width: 3.5rem;
+    --bs-spinner-height: 3.5rem;
+    --bs-spinner-border-width: 0.3rem;
     color: var(--acento);
 }

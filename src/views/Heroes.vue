@@ -15,18 +15,19 @@ const verTodos = ref(false);
 const hayFiltros = ref(false);
 
 const error = ref(false);
+const loading = ref(true);
 
 
-const fetchHeroes = (uri = 'https://api.deadlock-api.com/v1/assets/heroes') => {
+const fetchHeroes = (uri = 'https://api.deadlock-api.com/v1/assets/heroes?language=spanish') => {
     return fetch(uri)
         .then((res) => res.json())
         .then((data) => {
             heroes.value = data.filter(item => item.player_selectable);
         })
         .catch((err) => {
-          error.value = true;
-          console.log(err);
-        } )
+            error.value = true;
+            console.log(err);
+        })
 
 }
 
@@ -38,14 +39,18 @@ const fetchRank = (uri = 'https://api.deadlock-api.com/v1/analytics/hero-stats')
             heroesRank.value = ranking.value.map((rank) => heroes.value.find((heroe) => heroe.id == rank.hero_id));
         })
         .catch((err) => {
-          heroesRank.value = heroes.value;
-          console.log(err);
+            heroesRank.value = heroes.value;
+            console.log(err);
         })
 }
 
 onMounted(async () => {
-    await fetchHeroes();
-    fetchRank();
+    try {
+        await fetchHeroes();
+        await fetchRank();
+    } finally {
+        loading.value = false;
+    }
 })
 
 watch(
@@ -69,10 +74,11 @@ watch(
 </script>
 
 <template>
-    <HayError v-if="error" titulo="No hay conexión" mensaje="Verifique su conexión a internet e intentelo más tarde." texto-boton="Reintentar"></HayError>
+    <HayError v-if="error" titulo="No hay conexión" mensaje="Verifique su conexión a internet e intentelo más tarde."
+        texto-boton="Reintentar"></HayError>
     <main v-else class="container flex-grow-1 py-4 py-md-5">
         <div class="text-center mb-4 mb-md-5">
-            <h1 class="titulo mb-3">Héroes de Deadlock</h1>
+            <h2 class="titulo mb-3">Héroes de Deadlock</h2>
             <p class="text-secondary fs-5 mb-0">Buscá por nombre o filtrá por rol y dificultad.</p>
         </div>
 
@@ -101,18 +107,25 @@ watch(
                 </select>
             </div>
         </form>
+        <div v-if="!loading">
+            <!-- Cards -->
+            <section class="py-4 py-md-5">
+                <ContenedorCards :heroes="heroesFiltrados"></ContenedorCards>
+                <p v-if="heroesFiltrados.length == 0" class="text-center fs-3 text-secondary mt-4 mb-0 fw-semibold">No hay héroes que coincidan con los filtros.</p>
 
-        <!-- Cards -->
-        <section class="py-4 py-md-5">
-            <ContenedorCards :heroes="heroesFiltrados"></ContenedorCards>
-            <p v-if="heroesFiltrados.length == 0" class="text-center fs-3 text-secondary mt-4 mb-0 fw-semibold">No hay héroes que coincidan con los filtros.</p>
-
-            <!-- Botón ver todos-->
-            <div v-if="!hayFiltros" class="text-center mt-4">
-                <button type="button" class="etiqueta etiqueta-fija boton-etiqueta position-relative d-inline-block py-3 px-4 text-nowrap text-center text-black fw-bold" @click="verTodos = !verTodos">
-                    {{ verTodos ? 'Ver top 8' : 'Ver todos los héroes' }}
-                </button>
-            </div>
-        </section>
+                <!-- Botón ver todos-->
+                <div v-if="!hayFiltros" class="text-center mt-4">
+                    <button type="button"
+                        class="etiqueta etiqueta-fija boton-etiqueta position-relative d-inline-block py-3 px-4 text-nowrap text-center text-black fw-bold"
+                        @click="verTodos = !verTodos">
+                        {{ verTodos ? 'Ver top 8' : 'Ver todos los héroes' }}
+                    </button>
+                </div>
+            </section>
+        </div>
+        <div v-else class="d-flex flex-column align-items-center justify-content-center gap-3 py-5 my-5">
+            <div class="spinner-border cargando"></div>
+            <p class="text-secondary mb-0">Cargando héroes...</p>
+        </div>
     </main>
 </template>

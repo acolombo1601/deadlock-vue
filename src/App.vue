@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import { RouterLink } from 'vue-router';
-import { watch } from 'vue'
+import { KeepAlive, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -45,7 +45,11 @@ watch(() => route.path, () => {
     </nav>
 
     <!-- Contenido -->
-    <RouterView></RouterView>
+    <RouterView v-slot="{Component}">
+      <KeepAlive>
+        <component :is="Component"></component>
+      </KeepAlive>
+    </RouterView>
 
     <!-- Footer -->
     <footer class="pie py-4 text-center text-secondary small">

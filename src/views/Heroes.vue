@@ -1,6 +1,7 @@
 <script setup>
 import ContenedorCards from '@/components/ContenedorCards.vue';
 import HayError from '@/components/HayError.vue'
+import Recomendador from '@/components/Recomendador.vue';
 import { ref, watch, onMounted } from 'vue'
 
 const heroes = ref([]);
@@ -127,5 +128,7 @@ watch(
             <div class="spinner-border cargando"></div>
             <p class="text-secondary mb-0">Cargando héroes...</p>
         </div>
+
+        <Recomendador :heroes=heroes></Recomendador>
     </main>
 </template>

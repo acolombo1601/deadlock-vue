@@ -235,3 +235,12 @@ body {
     --bs-spinner-border-width: 0.3rem;
     color: var(--acento);
 }
+
+.panel-chat {
+    --bs-card-bg: var(--fondo);
+    --bs-card-border-color: var(--linea);
+}
+
+.mensajes {
+    max-height: 18rem;
+}

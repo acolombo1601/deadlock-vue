@@ -38,9 +38,6 @@ watch(() => route.path, () => {
             <li class="nav-item">
               <RouterLink to="/favoritos" class="nav-link">Favoritos</RouterLink>
             </li>
-            <li class="nav-item">
-              <RouterLink to="/" class="nav-link">Recomendador</RouterLink>
-            </li>
           </ul>
         </div>
 

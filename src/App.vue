@@ -1,6 +1,17 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import { RouterLink } from 'vue-router';
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+watch(() => route.path, () => {
+  const menu = document.getElementById('menu-principal')
+  if (menu.classList.contains('show')) {
+    document.querySelector('.navbar-toggler').click()
+  }
+})
 
 </script>
 
@@ -8,18 +19,31 @@ import { RouterLink } from 'vue-router';
   <div class="fondo min-vh-100 d-flex flex-column text-white" data-bs-theme="dark">
 
     <!-- Nav -->
-    <nav class="nav-principal navbar">
+    <nav class="nav-principal navbar navbar-expand-md" data-bs-theme="dark">
       <div class="container">
         <h1 class="m-0">
-          <RouterLink to="/" class="d-inline-block">
+          <RouterLink to="/" class="navbar-brand m-0 d-inline-block">
             <img src="./img/logo-completo.svg" alt="Deadlock" class="logo">
           </RouterLink>
         </h1>
-        <ul class="navbar-nav flex-row gap-3 gap-md-4">
-          <li class="nav-item"><RouterLink to="/" class="nav-link">Héroes</RouterLink></li>
-          <li class="nav-item"><RouterLink to="/favoritos" class="nav-link">Favoritos</RouterLink></li>
-          <li class="nav-item"><a class="nav-link" href="#">Recomendador</a></li>
-        </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-principal"
+          aria-controls="menu-principal" aria-expanded="false" aria-label="Abrir menú">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu-principal">
+          <ul class="navbar-nav ms-auto gap-md-4">
+            <li class="nav-item">
+              <RouterLink to="/" class="nav-link">Héroes</RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink to="/favoritos" class="nav-link">Favoritos</RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink to="/" class="nav-link">Recomendador</RouterLink>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </nav>
 

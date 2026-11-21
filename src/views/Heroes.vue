@@ -117,7 +117,7 @@ watch(
                 <!-- Botón ver todos-->
                 <div v-if="!hayFiltros" class="text-center mt-4">
                     <button type="button"
-                        class="etiqueta etiqueta-fija boton-etiqueta position-relative d-inline-block py-3 px-4 text-nowrap text-center text-black fw-bold"
+                        class="etiqueta etiqueta-fija boton-etiqueta position-relative d-inline-block py-3 px-4 text-center text-black fw-bold"
                         @click="verTodos = !verTodos">
                         {{ verTodos ? 'Ver top 8' : 'Ver todos los héroes' }}
                     </button>

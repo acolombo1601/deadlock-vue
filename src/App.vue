@@ -45,11 +45,7 @@ watch(() => route.path, () => {
     </nav>
 
     <!-- Contenido -->
-    <RouterView v-slot="{Component}">
-      <KeepAlive>
-        <component :is="Component"></component>
-      </KeepAlive>
-    </RouterView>
+    <RouterView></RouterView>
 
     <!-- Footer -->
     <footer class="pie py-4 text-center text-secondary small">

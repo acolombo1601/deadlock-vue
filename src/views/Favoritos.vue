@@ -28,7 +28,7 @@ onMounted(() => {
             <p class="text-secondary mb-4">
                 Entrá al detalle de un héroe y agregalo con el botón "Agregar a favoritos".
             </p>
-            <RouterLink to="/" class="btn btn-acento fw-semibold px-4">Ver héroes</RouterLink>
+            <RouterLink to="/" class="btn etiqueta etiqueta-fija boton-etiqueta position-relative d-inline-block py-3 px-4 text-center text-black fw-bold">Ver héroes</RouterLink>
         </section>
     </main>
 </template>

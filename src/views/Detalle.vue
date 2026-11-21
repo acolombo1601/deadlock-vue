@@ -40,8 +40,8 @@ const fetchHabilidades = (uri = `https://api.deadlock-api.com/v1/assets/items/by
             habilidades.value = data.filter((item) => item.ability_type == 'ultimate' || item.ability_type == 'signature');
         })
         .catch((err) => {
-          console.log(err);
-          errorHab.value = true;
+            console.log(err);
+            errorHab.value = true;
         })
 }
 
@@ -69,7 +69,9 @@ const verificarFavorito = computed(() => {
 
 <template>
     <main class="container flex-grow-1 py-4 py-md-5">
-        <HayError v-if="error" codigo="404" titulo="No pudimos cargar este héroe" mensaje="Puede que no exista o que haya un problema de conexión." texto-boton="Ver todos los héroes"></HayError>
+        <HayError v-if="error" codigo="404" titulo="No pudimos cargar este héroe"
+            mensaje="Puede que no exista o que haya un problema de conexión." texto-boton="Ver todos los héroes">
+        </HayError>
         <div v-if="!loading" class="row g-5 align-items-center">
 
             <!-- Info -->
@@ -98,13 +100,13 @@ const verificarFavorito = computed(() => {
             <!-- Imagen -->
             <div class="col-12 col-lg-6 text-center">
                 <div class="position-relative d-inline-block">
-                    <img :src="`/heroes-img/${heroe.id}.webp`"
-                        :alt="heroe.name" class="heroe-img d-block img-fluid border border-1 border-white">
+                    <img :src="`/heroes-img/${heroe.id}.webp`" :alt="heroe.name"
+                        class="heroe-img d-block img-fluid border border-1 border-white">
 
                     <div
                         class="position-absolute bottom-0 start-0 w-100 d-flex flex-wrap justify-content-center gap-3 pb-4">
                         <p v-for="palabra in heroe.tags"
-                            class="etiqueta etiqueta-fija position-relative m-0 py-2 px-4 text-nowrap text-center text-black fw-bold">
+                            class="etiqueta etiqueta-fija position-relative m-0 py-2 px-4 text-center text-black fw-bold">
                             {{ palabra }}</p>
                     </div>
                 </div>

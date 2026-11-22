@@ -13,7 +13,7 @@
 
 <template>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
-        <article v-for="heroe in heroes" :key="heroe.id" class="col d-flex justify-content-center">
+        <article v-for="heroe in heroes" class="col d-flex justify-content-center">
             <div class="contenedor position-relative">
 
                 <!-- La card entera sigue siendo un link al detalle -->

@@ -3,15 +3,19 @@ import ContenedorCards from '@/components/ContenedorCards.vue';
 import HayError from '@/components/HayError.vue'
 import Recomendador from '@/components/Recomendador.vue';
 import { ref, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
 
 const heroes = ref([]);
 const ranking = ref([]);
 const heroesRank = ref([]);
 const heroesFiltrados = ref([]);
 
-const busqueda = ref('');
-const rol = ref('');
-const dificultad = ref('');
+const busqueda = ref(route.query.nombre || '');
+const rol = ref(route.query.rol || '');
+const dificultad = ref(route.query.dificultad || '');
 const verTodos = ref(false);
 const hayFiltros = ref(false);
 
@@ -55,9 +59,8 @@ onMounted(async () => {
 })
 
 watch(
-    [busqueda, rol, dificultad, verTodos, heroesRank],
-    () => {
-        hayFiltros.value = busqueda.value.trim() !== '' || rol.value !== '' || dificultad.value !== '';
+    [busqueda, rol, dificultad, verTodos, heroesRank], () => {
+        hayFiltros.value = busqueda.value.trim() != '' || rol.value != '' || dificultad.value != '';
 
         const lista = heroesRank.value
             .filter((heroe) => heroe.name.toLowerCase().includes(busqueda.value.toLowerCase().trim()))
@@ -69,8 +72,20 @@ watch(
         } else {
             heroesFiltrados.value = lista;
         }
+
+        const query = {}
+        if (busqueda.value) query.nombre = busqueda.value
+        if (rol.value) query.rol = rol.value
+        if (dificultad.value) query.dificultad = dificultad.value
+        router.replace({ query })
     }
 )
+
+watch(() => route.query, (query) => {
+    busqueda.value = query.nombre || '';
+    rol.value = query.rol || '';
+    dificultad.value = query.dificultad || '';
+})
 
 </script>
 

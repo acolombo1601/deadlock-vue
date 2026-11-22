@@ -1,28 +1,29 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 const historial = ref([])
 const abierto = ref(false)
 const props = defineProps(["heroes"])
 
 //El recomendador daba error con el array entero de héroes, por eso el resumen.
-const resumenHeroes = props.heroes.map((h) => ({
+const resumenHeroes = computed(() => props.heroes.map((h) => ({
     nombre: h.name,
     estiloJuego: h.description.playstyle,
     genero: h.gender,
     rol: h.hero_type,
     dificultad: h.complexity,
     palabras: h.tags,
-}))
+})))
 
 async function recomendar(event) {
     const mensaje = event.target.mensaje.value
     event.target.reset()
     historial.value.push({ role: "user", content: mensaje })
 
+    //La API-KEY esta en un txt separado por motivos de seguridad.
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-            "Authorization": `Bearer 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`,
+            "Authorization": `Bearer [API-KEY]`,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -45,7 +46,7 @@ async function recomendar(event) {
                                 - Escribí entre 2 y 4 oraciones, con un máximo de 80 palabras.
                                 - Nombrá cada héroe que recomiendes y justificalo con sus datos (estilo de juego, rol, dificultad o palabras).
 
-                                LISTA DE HÉROES: ${JSON.stringify(resumenHeroes)}`
+                                LISTA DE HÉROES: ${JSON.stringify(resumenHeroes.value)}`
                 },
                 ...historial.value
             ],
@@ -53,7 +54,6 @@ async function recomendar(event) {
         })
     });
 
-    // Extract the assistant message with reasoning_details and save it to the response variable
     const result = await response.json();
     historial.value.push({ role: "assistant", content: result.choices[0].message.content })
 }

@@ -26,7 +26,7 @@ onMounted(() => {
         <section v-else class="vacio text-center mx-auto">
             <p class="fs-4 fw-semibold mb-2">Todavía no tenés héroes favoritos</p>
             <p class="text-secondary mb-4">
-                Entrá al detalle de un héroe y agregalo con el botón "Agregar a favoritos".
+                Explora los héroes disponibles y agrega los que más te gusten.
             </p>
             <RouterLink to="/" class="btn etiqueta etiqueta-fija boton-etiqueta position-relative d-inline-block py-3 px-4 text-center text-black fw-bold">Ver héroes</RouterLink>
         </section>

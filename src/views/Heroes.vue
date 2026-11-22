@@ -33,7 +33,7 @@ const fetchHeroes = (uri = 'https://api.deadlock-api.com/v1/assets/heroes?langua
 }
 
 const fetchRank = (uri = 'https://api.deadlock-api.com/v1/analytics/hero-stats') => {
-    fetch(uri)
+    return fetch(uri)
         .then((res) => res.json())
         .then((data) => {
             ranking.value = data.sort((a, b) => (b.wins * 100 / b.matches) - (a.wins * 100 / a.matches));
@@ -75,8 +75,7 @@ watch(
 </script>
 
 <template>
-    <HayError v-if="error" titulo="No hay conexión" mensaje="Verifique su conexión a internet e intentelo más tarde."
-        texto-boton="Reintentar"></HayError>
+    <HayError v-if="error" titulo="No hay conexión" mensaje="Verifique su conexión a internet e intentelo más tarde." texto-boton="Reintentar"></HayError>
     <main v-else class="container flex-grow-1 py-4 py-md-5">
         <div class="text-center mb-4 mb-md-5">
             <h2 class="titulo mb-3">Héroes de Deadlock</h2>

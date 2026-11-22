@@ -15,7 +15,7 @@ const heroe = ref();
 const habilidades = ref([]);
 
 const fetchHeroe = (uri = `https://api.deadlock-api.com/v1/assets/heroes/${route.params.id}?language=spanish`) => {
-    fetch(uri)
+    return fetch(uri)
         .then((res) => {
             if (!res.ok) throw new Error()
             return res.json()
@@ -34,7 +34,7 @@ const fetchHeroe = (uri = `https://api.deadlock-api.com/v1/assets/heroes/${route
 }
 
 const fetchHabilidades = (uri = `https://api.deadlock-api.com/v1/assets/items/by-hero-id/${route.params.id}?language=spanish`) => {
-    fetch(uri)
+    return fetch(uri)
         .then((res) => res.json())
         .then((data) => {
             habilidades.value = data.filter((item) => item.ability_type == 'ultimate' || item.ability_type == 'signature');
@@ -70,9 +70,9 @@ const verificarFavorito = computed(() => {
 <template>
     <main class="container flex-grow-1 py-4 py-md-5">
         <HayError v-if="error" codigo="404" titulo="No pudimos cargar este héroe"
-            mensaje="Puede que no exista o que haya un problema de conexión." texto-boton="Ver todos los héroes">
+            mensaje="Puede que no exista o que haya un problema de conexión." texto-boton="Reintentar">
         </HayError>
-        <div v-if="!loading" class="row g-5 align-items-center">
+        <div v-else-if="!loading" class="row g-5 align-items-center">
 
             <!-- Info -->
             <div class="col-12 col-lg-6 d-flex flex-column">

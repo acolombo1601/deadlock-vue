@@ -244,3 +244,7 @@ body {
 .mensajes {
     max-height: 18rem;
 }
+
+.btn-favs {
+    padding: 0.7rem;
+}
